@@ -16,6 +16,6 @@
       %a.exo-button.exo-dark{:href => new_resource_path}
         %span.exo-icon.exo-icon-plus
         %span.exo-text Add
-    -# - if respond_to? :parent and parent
-    -#   %li
-    -#     %a.exo-button.exo-dark{:href => parent_url } Back to #{parent.class.try(:name).try(:humanize)}
+    - if respond_to? :parent and parent
+      %li
+        %a.exo-button.exo-dark{:href => parent_url } Back to #{parent.class.try(:name).try(:humanize)}
