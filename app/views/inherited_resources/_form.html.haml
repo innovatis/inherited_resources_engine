@@ -1,4 +1,6 @@
 - smart_url = resource.new_record? ? smart_collection_url : smart_resource_url
+- parent_key_regex = /#{parent.class.name.underscore}.*_id/ if parent
+
 .exo-inset-group
   = simple_form_for(resource, :url => smart_url) do |form|
     .inputs
@@ -7,17 +9,19 @@
         = form.attribute :master
       - resource.attributes.keys.sort.map(&:to_sym).each do |field|
         - next if [:id, :created_at,:master, :updated_at].include?(field)
+        - next if field.to_s.match(parent_key_regex) if parent_key_regex
         - assoc = assocs.find{|a|a.association_foreign_key.to_sym == field}
-   
+        - next if assoc and parent and assoc.class_name = parent.class_name
+
         - if not assoc
           = form.attribute field
-   
+
         - elsif assoc.macro == :has_one
           = form.attribute field, :collection => assoc.klass.all
-   
+
         - else
           = form.association assoc.name
-   
+
     .actions
       = form.button :submit, :text => "Save", :disable_with => 'Saving...', :class => 'exo-button'
 
