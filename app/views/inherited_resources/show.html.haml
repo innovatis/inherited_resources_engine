@@ -1,7 +1,7 @@
 - if resource.respond_to?(:versions)
   = render :partial => 'versionbar'
 
-- parent_key_regex = /#{parent.class.name.underscore}.*_id/ if parent
+- parent_key_regex = /#{parent.class.name.underscore}.*_id/ if defined?(parent) and parent
 %h1 #{resource_class.name} ##{resource.id}
 = show_for resource do |r|
   %dl{:class => "#{collection.first.class.to_s.downcase} detail"}
