@@ -1,22 +1,23 @@
 - smart_url = resource.new_record? ? smart_collection_url : smart_resource_url
-= simple_form_for(resource, :url => smart_url) do |form|
-  .inputs
-    - assocs = resource_class.reflect_on_all_associations
-    - if resource.attributes.keys.include? "master"
-      = form.attribute :master
-    - resource.attributes.keys.sort.map(&:to_sym).each do |field|
-      - next if [:id, :created_at,:master, :updated_at].include?(field)
-      - assoc = assocs.find{|a|a.association_foreign_key.to_sym == field}
-
-      - if not assoc
-        = form.attribute field
-
-      - elsif assoc.macro == :has_one
-        = form.attribute field, :collection => assoc.klass.all
-
-      - else
-        = form.association assoc.name
-
-  .actions
-    = form.button :submit, :text => "Save", :disable_with => 'Saving...', :class => 'exo-button'
+.exo-inset-group
+  = simple_form_for(resource, :url => smart_url) do |form|
+    .inputs
+      - assocs = resource_class.reflect_on_all_associations
+      - if resource.attributes.keys.include? "master"
+        = form.attribute :master
+      - resource.attributes.keys.sort.map(&:to_sym).each do |field|
+        - next if [:id, :created_at,:master, :updated_at].include?(field)
+        - assoc = assocs.find{|a|a.association_foreign_key.to_sym == field}
+   
+        - if not assoc
+          = form.attribute field
+   
+        - elsif assoc.macro == :has_one
+          = form.attribute field, :collection => assoc.klass.all
+   
+        - else
+          = form.association assoc.name
+   
+    .actions
+      = form.button :submit, :text => "Save", :disable_with => 'Saving...', :class => 'exo-button'
 
