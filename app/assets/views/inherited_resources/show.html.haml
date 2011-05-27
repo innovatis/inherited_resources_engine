@@ -1,0 +1,14 @@
+- if resource.respond_to?(:versions)
+  = render :partial => 'versionbar'
+
+%h1 #{resource_class.name} ##{resource.id}
+
+= show_for resource do |r|
+  %dl{:class => "#{collection.first.class.to_s.downcase} detail"}
+    - resource.attributes.keys.sort.map(&:to_sym).each do |attr|
+      - next if [:id, :created_at, :updated_at].include?(attr)
+      = r.attribute attr
+
+.clear
+- if resource_class.reflect_on_all_associations.find{|a|a.name==:comments}
+  = render :partial => 'comments'

@@ -1,0 +1,20 @@
+%h2 Comments
+%ul
+  - resource.comments.each do |comment|
+    %li 
+      <span class='body'>#{comment.body}</span> 
+      - if resource.respond_to?(:versions) 
+        - if version = resource.version_at(comment.created_at).version
+          <span class='time'>at <a href="#{resource_path}/versions/#{version.id}">#{comment.created_at}</a></span> 
+        - else
+          <span class='time'>at <a href="#{resource_path}">#{comment.created_at}</a></span> 
+      - else 
+        <span class='time'>at #{comment.created_at}</span> 
+      <span class='user'>by #{comment.user.email}</span>
+
+.add_comment{:style => 'display:none'}
+  = simple_form_for resource do |f|
+    = f.simple_fields_for 'comments_attributes[]', resource.comments.build do |ff|
+      = ff.input :body
+    = submit_tag 
+%button.button{:onclick => "$('.add_comment').show('slow');"} + Comment

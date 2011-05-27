@@ -1,0 +1,37 @@
+- content_for :js do
+  :plain
+    $(function(){
+      $("#versionbar input").change(function() {
+        $(this.form).submit();
+      });
+    });
+
+#versionbar
+  .wrap
+    .current.qb
+      - if resource.live? 
+        Current Version
+      - else 
+        = resource.version.created_at.to_s(:short) 
+    .previous.qb
+      - if r = resource.previous_version.try(:version)
+        = link_to r.created_at.to_s(:short), "#{resource_path(resource)}/versions/#{r.id}"
+        &laquo;
+    .next.qb
+      - if r = resource.next_version.try(:version)
+        &raquo;
+        = link_to r.created_at.to_s(:short), "#{resource_path(resource)}/versions/#{r.id}"
+      - elsif !resource.live?
+        &raquo;
+        = link_to "Current Version", resource_path(resource)
+  %form{:action => resource_path(resource), :method => :get}
+    %input.datepicker.submitonchange{:name => 'version_at'}
+
+  -# .dropdown{:style => 'display:none'}
+    - vers = resource.versions
+    - vers.shift
+    - vers.each do |ver|
+      %li= link_to "Version at #{ver.created_at}, by #{User.find(ver.whodunnit).email}", "#{resource_path(resource)}/versions/#{ver.id}"
+    - ver = vers[-1]
+    - if(ver)
+      %li= link_to "Latest Version at #{ver.created_at}, by #{User.find(ver.whodunnit).email}", "#{resource_path}"

@@ -1,0 +1,4 @@
+- scope = "#{object.class.name.underscore}[#{attribute_name}_attributes]"
+%ul.asset_list
+  - object.send(attribute_name).each do |obj|
+    = Mustache.render(File.read(File.join(Rails.root,'app','views','mustaches','dms_file_asset.mustache')), :scope => "#{object.class.name.underscore}[#{attribute_name}_attributes][#{obj.id}]", :assetPath => obj.asset_path, :assetPathDisplay => obj.asset_path.sub(/http\:\/\/s3.amazonaws.com\/[^\/]+\//,''), :id => obj.id, :persistedId => obj.id).html_safe
