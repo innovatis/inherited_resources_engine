@@ -4,11 +4,12 @@
 - parent_key_regex = /#{parent.class.name.underscore}.*_id/ if defined?(parent) and parent
 %h1.exo-page-title #{resource_class.name} ##{resource.id}
 = show_for resource do |r|
-  %dl{:class => "#{collection.first.class.to_s.downcase} detail"}
-    - resource.attributes.keys.sort.map(&:to_sym).each do |field|
-      - next if [:id, :created_at, :updated_at].include?(field)
-      - next if field.to_s.match(parent_key_regex) if parent_key_regex
-      = r.attribute field
+  %fieldset
+    %dl{:class => "#{collection.first.class.to_s.downcase} detail"}
+      - resource.attributes.keys.sort.map(&:to_sym).each do |field|
+        - next if [:id, :created_at, :updated_at].include?(field)
+        - next if field.to_s.match(parent_key_regex) if parent_key_regex
+        = r.attribute field
 
 .clear
 - if resource_class.reflect_on_all_associations.find{|a|a.name==:comments}

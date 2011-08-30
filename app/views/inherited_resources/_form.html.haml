@@ -4,23 +4,24 @@
 .exo-inset-group
   = simple_form_for(resource, :url => smart_url) do |form|
     .inputs
-      - assocs = resource_class.reflect_on_all_associations
-      - if resource.attributes.keys.include? "master"
-        = form.attribute :master
-      - resource.attributes.keys.sort.map(&:to_sym).each do |field|
-        - next if [:id, :created_at,:master, :updated_at].include?(field)
-        - next if field.to_s.match(parent_key_regex) if parent_key_regex
-        - assoc = assocs.find{|a|a.association_foreign_key.to_sym == field}
-        - next if assoc and defined?(parent) and assoc.class_name = parent.class_name
+      %fieldset
+        - assocs = resource_class.reflect_on_all_associations
+        - if resource.attributes.keys.include? "master"
+          = form.attribute :master
+        - resource.attributes.keys.sort.map(&:to_sym).each do |field|
+          - next if [:id, :created_at,:master, :updated_at].include?(field)
+          - next if field.to_s.match(parent_key_regex) if parent_key_regex
+          - assoc = assocs.find{|a|a.association_foreign_key.to_sym == field}
+          - next if assoc and defined?(parent) and assoc.class_name = parent.class_name
 
-        - if not assoc
-          = form.attribute field
+          - if not assoc
+            = form.attribute field
 
-        - elsif assoc.macro == :has_one
-          = form.attribute field, :collection => assoc.klass.all
+          - elsif assoc.macro == :has_one
+            = form.attribute field, :collection => assoc.klass.all
 
-        - else
-          = form.association assoc.name
+          - else
+            = form.association assoc.name
 
     .actions
       %ul.exo-horizontal-nav
