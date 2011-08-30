@@ -11,7 +11,7 @@
         - next if [:id, :created_at,:master, :updated_at].include?(field)
         - next if field.to_s.match(parent_key_regex) if parent_key_regex
         - assoc = assocs.find{|a|a.association_foreign_key.to_sym == field}
-        - next if assoc and parent and assoc.class_name = parent.class_name
+        - next if assoc and defined?(parent) and assoc.class_name = parent.class_name
 
         - if not assoc
           = form.attribute field
