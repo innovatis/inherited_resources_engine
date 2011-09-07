@@ -14,6 +14,6 @@
         - next if field.to_s.match(parent_key_regex) if parent_key_regex
         = r.attribute field
 
-.clear
+%br.clear
 - if resource_class.reflect_on_all_associations.find{|a|a.name==:comments}
   = render :partial => 'comments'
