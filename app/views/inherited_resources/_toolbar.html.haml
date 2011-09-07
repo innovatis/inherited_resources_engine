@@ -1,19 +1,15 @@
 %ul.exo-horizontal-nav
   %li
     - if respond_to? :parent and parent
-      %a.exo-button.exo-dark{href: parent_url } Back to #{parent.class.try(:name).try(:humanize)}
+      = link_to "Back To #{parent.class.try(:name).try(:humanize)}", parent_url, class: 'exo-button exo-dark'
     - else
-      %a.exo-button.exo-dark{href: collection_path}
+      = link_to collection_path, class: 'exo-button exo-dark' do
         All
         .exo-tiny-icon-search
   - if if_path(/#{collection_path.tr('/','\/')}\/\w+/) and (! if_path(/\/new\/?$/)) and resource
-    %li
-      %a.exo-button.exo-dark{href: edit_resource_path(resource)} 
-        Edit
-    %li
-      %a.exo-button.exo-dark{href: resource_path, 'data-confirm' => 'Are you sure?', 'data-method' => 'delete'}
-        Destroy
+    %li= link_to 'Edit',  edit_resource_path(resource), class: 'exo-button exo-dark'
+    %li= link_to 'Delete', resource, method: :delete, class: 'exo-button exo-dark'
   %li
-    %a.exo-button.exo-dark{href: new_resource_path}
+    = link_to new_resource_path, class: 'exo-button exo-dark' do
       Add
       .exo-tiny-icon-plus
