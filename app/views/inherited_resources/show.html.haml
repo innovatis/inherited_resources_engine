@@ -2,18 +2,22 @@
   = render :partial => 'versionbar'
 
 - parent_key_regex = /#{parent.class.name.underscore}.*_id/ if defined?(parent) and parent
-%h1
-  - if resource.respond_to?(:as_page_title)
-    = resource.as_page_title
-  - else
-    #{resource_class.name} ##{resource.id}
-= show_for resource do |r|
-  %dl{:class => "#{collection.first.class.to_s.downcase} detail"}
-    - resource.attributes.keys.sort.map(&:to_sym).each do |field|
-      - next if [:id, :created_at, :updated_at].include?(field)
-      - next if field.to_s.match(parent_key_regex) if parent_key_regex
-      = r.attribute field
+.exo-page-header
+  .exo-page-title
+    %h1
+      - if resource.respond_to?(:as_page_title)
+        = resource.as_page_title
+      - else
+        #{resource_class.name} ##{resource.id}
 
-.clear
+= show_for resource do |r|
+  %fieldset
+    %dl{:class => "#{collection.first.class.to_s.downcase} detail"}
+      - resource.attributes.keys.sort.map(&:to_sym).each do |field|
+        - next if [:id, :created_at, :updated_at].include?(field)
+        - next if field.to_s.match(parent_key_regex) if parent_key_regex
+        = r.attribute field
+
+%br.clear
 - if resource_class.reflect_on_all_associations.find{|a|a.name==:comments}
   = render :partial => 'comments'
