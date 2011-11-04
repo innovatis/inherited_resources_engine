@@ -1,4 +1,8 @@
-%h1 Edit #{resource_class.name.titleize} ##{resource.id}
+%h1
+  - if resource.respond_to?(:as_page_title)
+    Edit #{resource.as_page_title}
+  - else
+    Edit #{resource_class.name.titleize} ##{resource.id}
 #stuff
   = render 'form'
 %br.clear
