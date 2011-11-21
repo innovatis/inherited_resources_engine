@@ -8,7 +8,7 @@
         .exo-tiny-icon-search
   - if if_path(/#{collection_path.tr('/','\/')}\/\w+/) and (! if_path(/\/new\/?$/)) and resource
     %li= link_to 'Edit',  edit_resource_path(resource), class: 'exo-button exo-dark'
-    %li= link_to 'Delete', resource, method: :delete, class: 'exo-button exo-dark'
+    %li= link_to 'Delete', resource_path(resource), method: :delete, class: 'exo-button exo-dark'
   %li
     = link_to new_resource_path, class: 'exo-button exo-dark' do
       Add
